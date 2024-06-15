@@ -1,9 +1,6 @@
 import os
 import random
 
-#Hey Taewoo you need to fix these issues:
-#TODO: fix your variable names
-
 class Vocabulary():
     def __init__(self):
         self.englishlist = []
@@ -13,7 +10,7 @@ class Vocabulary():
         self.languageChoice = 'undecided'
         self.testlang = []
         self.answerlang = []
-
+        self.wronglist = []
     def initlist(self,path):
         with open(path,"r",encoding="utf-8") as file:
             lines = file.readlines()
@@ -27,7 +24,8 @@ class Vocabulary():
     def test(self):
         while True:
             os.system('cls')
-            choice = input("Do you want to start? (yes/no)")
+            print("Do you want to start? (yes/no)")
+            choice = input()
             if choice == 'yes':
                 self.begintest()
                 break
@@ -45,13 +43,15 @@ class Vocabulary():
         for index in range(0,len(self.testlang)):
             os.system('cls')
             print("You are on word #" + str(index + 1) + " out of " + str(len(self.testlang)))
-            print("You got " + str(self.correct) + " correct.")
-            print(self.testlang[index])
+            print("You got " + str(self.correct) + " correct yet.")
+            print("question = " + str(self.testlang[index]))
             userinput = input("Please translate the word: ")
             if self.checkanswer(userinput, self.answerlang[index]):
                 self.correct += 1
                 input("You got it correct!")
             else:
+                self.wronglist.append(str(self.englishlist[index]) + ":" + str(self.koreanlist[index]))
+                print(self.wronglist)
                 input("That was wrong")
         
         self.displayresults()
@@ -59,7 +59,8 @@ class Vocabulary():
     def langchoice(self):
         while True:
             os.system('cls')
-            choice = input("Would you like to be tested in Korean or English? (kor/eng)")
+            print("Would you like to be tested in Korean or English? (kor/eng)")
+            choice = input()
             if choice == 'kor':
                 self.languageChoice = 'kor'
                 self.testlang = self.koreanlist
@@ -76,7 +77,6 @@ class Vocabulary():
     def checkanswer(self, userinput, answer):
         if self.languageChoice == 'eng':
             for word in answer:
-                print(userinput + " " + word)
                 if userinput == word.strip():
                     return True
             return False
@@ -88,7 +88,11 @@ class Vocabulary():
     
     def displayresults(self):
         os.system('cls')
-        input(
+        print(
             "You got " + str(self.correct) + " correct out of " + str(self.total) + ".\n"
             + "For a score of " + str(self.correct/self.total*100) + ".\n"
               )
+        print("< wrong list >" + "\n")
+        for i in range(0,len(self.wronglist)):
+            print(str(self.wronglist[i]) + "\n")
+        input()
