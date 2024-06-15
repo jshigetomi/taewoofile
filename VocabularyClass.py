@@ -1,6 +1,9 @@
 import os
 import random
 
+#Hey Taewoo you need to fix these issues:
+#TODO: fix your variable names
+
 class Vocabulary():
     def __init__(self):
         self.englishlist = []
